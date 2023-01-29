@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class ChatUI : MonoBehaviour
 {
 	[SerializeField]
+	private Client client;
+
+	[SerializeField]
 	private TMP_InputField inputField;
 	[SerializeField]
 	private RectTransform chatContent;
@@ -18,7 +21,7 @@ public class ChatUI : MonoBehaviour
 		if (Input.GetButtonDown("Submit"))
 		{
 			if (inputField.IsActive() && inputField.text != "")
-				AddChat(inputField.text);
+				client.SendChat(inputField.text);
 			else
 				inputField.ActivateInputField();
 		}
