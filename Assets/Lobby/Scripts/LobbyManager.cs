@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
@@ -7,11 +8,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 	public enum Panel { Login, InConnect, Lobby, Room }
 
 	[SerializeField]
-	private GameObject loginPanel;
+	private LoginPanel loginPanel;
 	[SerializeField]
-	private GameObject inConnectPanel;
+	private InConnectPanel inConnectPanel;
 	[SerializeField]
-	private GameObject roomPanel;
+	private RoomPanel roomPanel;
+	[SerializeField]
+	private LobbyPanel lobbyPanel;
 
 	public override void OnConnectedToMaster()
 	{
@@ -54,11 +57,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 		AddMessage("Left room");
 	}
 
+	public override void OnJoinedLobby()
+	{
+		SetActivePanel(Panel.Lobby);
+	}
+
+	public override void OnRoomListUpdate(List<RoomInfo> roomList)
+	{
+		lobbyPanel.UpdateRoomList(roomList);
+	}
+
+	public override void OnLeftLobby()
+	{
+		SetActivePanel(Panel.InConnect);
+	}
+
 	private void SetActivePanel(Panel panel)
 	{
-		loginPanel.SetActive(panel == Panel.Login);
-		inConnectPanel.SetActive(panel == Panel.InConnect);
-		roomPanel.SetActive(panel == Panel.Room);
+		loginPanel.gameObject.SetActive(panel == Panel.Login);
+		inConnectPanel.gameObject.SetActive(panel == Panel.InConnect);
+		roomPanel.gameObject.SetActive(panel == Panel.Room);
+		lobbyPanel.gameObject.SetActive(panel == Panel.Lobby);
 	}
 
 	private void AddMessage(string message)

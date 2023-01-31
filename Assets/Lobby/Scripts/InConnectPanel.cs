@@ -55,7 +55,7 @@ public class InConnectPanel : MonoBehaviour
 
 	public void OnLobbyButtonClicked()
 	{
-		// TODO : 로비 구현
+		PhotonNetwork.JoinLobby();
 	}
 
     public void OnLogoutButtonClicked()
