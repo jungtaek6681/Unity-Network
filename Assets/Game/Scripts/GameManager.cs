@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		TestGameStart();
+		StartCoroutine(TestGameDelay());
 	}
 
 
@@ -72,12 +72,24 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	private void GameStart()
 	{
-		// TODO : 
+		float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+		float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+		float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+		Vector3 position = new Vector3(x, 0.0f, z);
+		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
+		PhotonNetwork.Instantiate("Player", position, rotation, 0);
 	}
 
 	private void TestGameStart()
 	{
-		// TODO : 
+		float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+		float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+		float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+		Vector3 position = new Vector3(x, 0.0f, z);
+		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
+		PhotonNetwork.Instantiate("Player", position, rotation, 0);
 	}
 
 	private IEnumerator StartCountDown()
@@ -96,6 +108,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 		yield return new WaitForSeconds(1f);
 		infoText.text = "";
+	}
+
+	private IEnumerator TestGameDelay()
+	{
+		yield return new WaitForSeconds(1.0f);
+		TestGameStart();
 	}
 
 	private bool CheckAllPlayerLoadLevel()
