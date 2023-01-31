@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
@@ -47,14 +48,43 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 	public override void OnJoinedRoom()
 	{
 		SetActivePanel(Panel.Room);
+		AddMessage("Join room");
 
-		// TODO : ·ë ±¸Çö
+		Hashtable props = new Hashtable
+		{
+			{ GameData.PLAYER_READY, false }, 
+			{ GameData.PLAYER_LOAD, false }
+		};
+		PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+		PhotonNetwork.AutomaticallySyncScene = true;
+		roomPanel.UpdateRoomState();
 	}
 
 	public override void OnLeftRoom()
 	{
 		SetActivePanel(Panel.InConnect);
 		AddMessage("Left room");
+	}
+
+	public override void OnPlayerEnteredRoom(Player newPlayer)
+	{
+		roomPanel.UpdateRoomState();
+	}
+
+	public override void OnPlayerLeftRoom(Player otherPlayer)
+	{
+		roomPanel.UpdateRoomState();
+	}
+
+	public override void OnMasterClientSwitched(Player newMasterClient)
+	{
+		roomPanel.UpdateRoomState();
+	}
+
+	public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+	{
+		roomPanel.UpdateRoomState();
 	}
 
 	public override void OnJoinedLobby()
@@ -74,10 +104,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
 	private void SetActivePanel(Panel panel)
 	{
-		loginPanel.gameObject.SetActive(panel == Panel.Login);
-		inConnectPanel.gameObject.SetActive(panel == Panel.InConnect);
-		roomPanel.gameObject.SetActive(panel == Panel.Room);
-		lobbyPanel.gameObject.SetActive(panel == Panel.Lobby);
+		loginPanel.gameObject?.SetActive(panel == Panel.Login);
+		inConnectPanel.gameObject?.SetActive(panel == Panel.InConnect);
+		roomPanel.gameObject?.SetActive(panel == Panel.Room);
+		lobbyPanel.gameObject?.SetActive(panel == Panel.Lobby);
 	}
 
 	private void AddMessage(string message)
