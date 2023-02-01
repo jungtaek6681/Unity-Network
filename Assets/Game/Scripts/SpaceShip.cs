@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpaceShip : MonoBehaviourPun
+public class SpaceShip : MonoBehaviourPun, IPunObservable
 {
 	private Rigidbody rigid;
 
@@ -18,6 +18,9 @@ public class SpaceShip : MonoBehaviourPun
 
 	[SerializeField]
 	private Bullet bulletPrefab;
+
+	[SerializeField]
+	private int bulletCount;
 
 	private void Awake()
 	{
@@ -64,11 +67,25 @@ public class SpaceShip : MonoBehaviourPun
 	public void Fire()
 	{
 		photonView.RPC("CreateBullet", RpcTarget.All, transform.position, transform.rotation);
+		bulletCount++;
 	}
 
 	[PunRPC]
 	public void CreateBullet(Vector3 position, Quaternion rotation)
 	{
 		Instantiate(bulletPrefab, position, rotation);
+	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		// 순서주의 : 스트림의 주는 순서와 받는 순서를 동일하게
+		if (stream.IsWriting)
+		{
+			stream.SendNext(bulletCount);
+		}
+		else  // stream.IsReading
+		{
+			bulletCount = (int)stream.ReceiveNext();
+		}
 	}
 }
