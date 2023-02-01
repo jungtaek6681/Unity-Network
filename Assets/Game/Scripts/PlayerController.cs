@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviourPun
 	{
 		Accelate();
 		Rotate();
+		Fire();
 	}
 
 	private void Accelate()
@@ -42,5 +43,11 @@ public class PlayerController : MonoBehaviourPun
 		float hInput = Input.GetAxis("Horizontal");
 
 		spaceShip.Rotate(hInput);
+	}
+
+	private void Fire()
+	{
+		if (Input.GetButtonDown("Fire1"))
+			spaceShip.Fire();
 	}
 }

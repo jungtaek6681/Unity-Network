@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2324106904207650715}
   - component: {fileID: 3426164748994310423}
   - component: {fileID: 7076717384866930589}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: EngineTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4836,7 +4836,7 @@ GameObject:
   - component: {fileID: -634623599320381484}
   - component: {fileID: 8571212054913079068}
   - component: {fileID: -1001284798231067340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5014,6 +5014,7 @@ MonoBehaviour:
   movePower: 1000
   rotateSpeed: 90
   maxSpeed: 20
+  bulletPrefab: {fileID: 8115886019000849130, guid: f8f6526bf8ca8844f9f1bbc692668e05, type: 3}
 --- !u!54 &-1001284798231067340
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5041,7 +5042,7 @@ GameObject:
   - component: {fileID: 4817543420664908294}
   - component: {fileID: 3552243298130591213}
   - component: {fileID: 2037603551607598230}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Destruction
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,8 +1,8 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SpaceShip : MonoBehaviourPun
@@ -15,6 +15,9 @@ public class SpaceShip : MonoBehaviourPun
 	private float rotateSpeed;
 	[SerializeField]
 	private float maxSpeed;
+
+	[SerializeField]
+	private Bullet bulletPrefab;
 
 	private void Awake()
 	{
@@ -56,5 +59,16 @@ public class SpaceShip : MonoBehaviourPun
 			rigid.position = new Vector3(rigid.position.x, rigid.position.y, -Mathf.Sign(rigid.position.z) * Camera.main.orthographicSize);
 			rigid.position -= rigid.position.normalized * 0.1f; // offset a little bit to avoid looping back & forth between the 2 edges 
 		}
+	}
+
+	public void Fire()
+	{
+		photonView.RPC("CreateBullet", RpcTarget.All, transform.position, transform.rotation);
+	}
+
+	[PunRPC]
+	public void CreateBullet(Vector3 position, Quaternion rotation)
+	{
+		Instantiate(bulletPrefab, position, rotation);
 	}
 }
