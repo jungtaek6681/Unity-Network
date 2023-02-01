@@ -68,6 +68,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 		}
 	}
 
+	public override void OnMasterClientSwitched(Player newMasterClient)
+	{
+		if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
+		{
+			StartCoroutine(SpawnAsteroid());
+		}
+	}
+
 	#endregion
 
 	private void GameStart()
@@ -79,6 +87,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
 		PhotonNetwork.Instantiate("Player", position, rotation, 0);
+
+		StartCoroutine(SpawnAsteroid());
 	}
 
 	private void TestGameStart()
@@ -90,6 +100,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
 		PhotonNetwork.Instantiate("Player", position, rotation, 0);
+
+		StartCoroutine(SpawnAsteroid());
 	}
 
 	private IEnumerator StartCountDown()
@@ -143,5 +155,44 @@ public class GameManager : MonoBehaviourPunCallbacks
 	{
 		Debug.Log(info);
 		infoText.text = info;
+	}
+
+	private IEnumerator SpawnAsteroid()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(Random.Range(3, 5));
+
+			Vector2 direction = Random.insideUnitCircle;
+			Vector3 position = Vector3.zero;
+
+			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+			{
+				// Make it appear on the left/right side
+				position = new Vector3(Mathf.Sign(direction.x) * Camera.main.orthographicSize * Camera.main.aspect, 0, direction.y * Camera.main.orthographicSize);
+			}
+			else
+			{
+				// Make it appear on the top/bottom
+				position = new Vector3(direction.x * Camera.main.orthographicSize * Camera.main.aspect, 0, Mathf.Sign(direction.y) * Camera.main.orthographicSize);
+			}
+
+			// Offset slightly so we are not out of screen at creation time (as it would destroy the asteroid right away)
+			position -= position.normalized * 0.1f;
+
+
+			Vector3 force = -position.normalized * 1000.0f;
+			Vector3 torque = Random.insideUnitSphere * Random.Range(100.0f, 300.0f);
+			object[] instantiationData = { force, torque };
+
+			if (Random.Range(0, 10) < 5)
+			{
+				PhotonNetwork.InstantiateRoomObject("BigStone", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
+			}
+			else
+			{
+				PhotonNetwork.InstantiateRoomObject("SmallStone", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
+			}
+		}
 	}
 }
