@@ -345,6 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0052f74d2875e94d9c2c3e8dd90ca87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  client: {fileID: 0}
   inputField: {fileID: 7669338932963621501}
   content: {fileID: 7669338933654665257}
   scrollRect: {fileID: 7669338934202496923}

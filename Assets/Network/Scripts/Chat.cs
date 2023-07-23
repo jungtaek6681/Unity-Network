@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class Chat : MonoBehaviour
 {
+    [SerializeField] Client client;
+
     [SerializeField] TMP_InputField inputField;
     [SerializeField] RectTransform content;
     [SerializeField] ScrollRect scrollRect;
@@ -25,8 +27,8 @@ public class Chat : MonoBehaviour
 
     public void SendChat(string chat)
     {
-        if (inputField.text != "")
-            AddMessage(chat);
+        if (client != null)
+            client.SendChat(chat);
 
         inputField.text = "";
         inputField.ActivateInputField();
