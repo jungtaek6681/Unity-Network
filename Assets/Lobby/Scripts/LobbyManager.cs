@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
@@ -11,6 +12,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] LoginPanel loginPanel;
     [SerializeField] MenuPanel menuPanel;
     [SerializeField] RoomPanel roomPanel;
+    [SerializeField] LobbyPanel lobbyPanel;
 
     public void Start()
     {
@@ -60,10 +62,26 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         SetActivePanel(Panel.Menu);
     }
 
+    public override void OnJoinedLobby()
+    {
+        SetActivePanel(Panel.Lobby);
+    }
+
+    public override void OnLeftLobby()
+    {
+        SetActivePanel(Panel.Menu);
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        lobbyPanel.UpdateRoomList(roomList);
+    }
+
     private void SetActivePanel(Panel panel)
     {
         if (loginPanel != null) loginPanel.gameObject.SetActive(panel == Panel.Login);
         if (menuPanel != null) menuPanel.gameObject.SetActive(panel == Panel.Menu);
         if (roomPanel != null) roomPanel.gameObject.SetActive(panel == Panel.Room);
+        if (lobbyPanel != null) lobbyPanel.gameObject.SetActive(panel == Panel.Lobby);
     }
 }

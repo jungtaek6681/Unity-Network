@@ -44,6 +44,11 @@ public class MenuPanel : MonoBehaviour
         PhotonNetwork.JoinRandomOrCreateRoom(roomName: name, roomOptions: options);
     }
 
+    public void JoinLobby()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
     public void Logout()
     {
         PhotonNetwork.Disconnect();

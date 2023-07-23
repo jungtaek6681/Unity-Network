@@ -256,7 +256,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8266306232766978576}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1939838966151909072}
+        m_TargetAssemblyTypeName: RoomEntry, Assembly-CSharp
+        m_MethodName: JoinRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1524369796693215410
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +280,7 @@ GameObject:
   - component: {fileID: 6068696688431543252}
   - component: {fileID: 3724621215688467423}
   - component: {fileID: 1579522584025367953}
+  - component: {fileID: 1939838966151909072}
   m_Layer: 5
   m_Name: RoomEntry
   m_TagString: Untagged
@@ -336,6 +349,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1939838966151909072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524369796693215410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af5df13339b3af45b20dbff42d15605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomName: {fileID: 357019294366316985}
+  currentPlayer: {fileID: 2616448059591944038}
+  joinRoomButton: {fileID: 5564003483403808042}
 --- !u!1 &1812641854389840327
 GameObject:
   m_ObjectHideFlags: 0
