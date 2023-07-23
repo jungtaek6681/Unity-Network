@@ -217,6 +217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc2f9f832addd6647a205bd5f0e24f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerContent: {fileID: 1204404543}
+  playerEntryPrefab: {fileID: 3731023699572381743, guid: e6e87caa82c916447b533b2eb2185a63,
+    type: 3}
+  startButton: {fileID: 5916088861808141049}
 --- !u!1 &2700146042697714935
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1059314874164842684
 RectTransform:
   m_ObjectHideFlags: 0

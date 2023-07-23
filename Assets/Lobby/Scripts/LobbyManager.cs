@@ -53,13 +53,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         SetActivePanel(Panel.Room);
-
-        // TODO : Room ±¸Çö
     }
 
     public override void OnLeftRoom()
     {
         SetActivePanel(Panel.Menu);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        roomPanel.PlayerEnterRoom(newPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        roomPanel.PlayerLeftRoom(otherPlayer);
     }
 
     public override void OnJoinedLobby()
