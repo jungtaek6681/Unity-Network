@@ -21,4 +21,11 @@ public class StatePanel : MonoBehaviour
         newLog.text = string.Format("[Photon] {0} : {1}", System.DateTime.Now.ToString("HH:mm:ss.ff"), state);
         Debug.Log(string.Format("[Photon] {0}", state));
     }
+
+    public void AddMessage(string message)
+    {
+        TMP_Text newLog = Instantiate(logPrefab, content);
+        newLog.text = string.Format("[Photon] {0} : {1}", System.DateTime.Now.ToString("HH:mm:ss.ff"), message);
+        Debug.Log(string.Format("[Photon] {0}", message));
+    }
 }

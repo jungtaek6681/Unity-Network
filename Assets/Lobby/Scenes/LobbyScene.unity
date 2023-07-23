@@ -267,8 +267,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce21c56270fed15468ca6ed908e5869f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statePanel: {fileID: 0}
   loginPanel: {fileID: 2294124677443533307}
   menuPanel: {fileID: 2099693460}
+  roomPanel: {fileID: 2096640689}
 --- !u!4 &1615726874
 Transform:
   m_ObjectHideFlags: 0
@@ -515,6 +517,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2096640689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2096640689, guid: aa9d17700908b5447a6fa3a3caddfd0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5891924587871617275}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2f9f832addd6647a205bd5f0e24f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2099693458
 PrefabInstance:
   m_ObjectHideFlags: 0
