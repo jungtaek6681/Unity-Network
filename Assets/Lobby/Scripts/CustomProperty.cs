@@ -6,6 +6,8 @@ public static class CustomProperty
     public const string READY = "Ready";
     public const string LOAD = "Load";
 
+    public const string LOADTIME = "LoadTime";
+
     public static bool GetReady(this Player player)
     {
         PhotonHashtable property = player.CustomProperties;
@@ -36,5 +38,21 @@ public static class CustomProperty
         PhotonHashtable property = new PhotonHashtable();
         property[LOAD] = load;
         player.SetCustomProperties(property);
+    }
+
+    public static double GetLoadTime(this Room room)
+    {
+        PhotonHashtable property = room.CustomProperties;
+        if (property.ContainsKey(LOADTIME))
+            return (double)property[LOADTIME];
+        else
+            return -1;
+    }
+
+    public static void SetLoadTime(this Room room, double loadTime)
+    {
+        PhotonHashtable property = new PhotonHashtable();
+        property[LOADTIME] = loadTime;
+        room.SetCustomProperties(property);
     }
 }
