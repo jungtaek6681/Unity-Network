@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -68,6 +69,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         roomPanel.PlayerLeftRoom(otherPlayer);
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        roomPanel.PlayerPropertiesUpdate(targetPlayer, changedProps);
     }
 
     public override void OnJoinedLobby()

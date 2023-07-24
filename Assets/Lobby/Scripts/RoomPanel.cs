@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class RoomPanel : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class RoomPanel : MonoBehaviour
             entry.SetPlayer(player);
             playerDictionary.Add(player.ActorNumber, entry);
         }
+
+        PhotonNetwork.LocalPlayer.SetReady(false);
+        PhotonNetwork.LocalPlayer.SetLoad(false);
     }
 
     private void OnDisable()
@@ -47,6 +51,11 @@ public class RoomPanel : MonoBehaviour
     {
         Destroy(playerDictionary[otherPlayer.ActorNumber].gameObject);
         playerDictionary.Remove(otherPlayer.ActorNumber);
+    }
+
+    public void PlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        playerDictionary[targetPlayer.ActorNumber].ChangeCustomProperty(changedProps);
     }
 
     public void LeaveRoom()
