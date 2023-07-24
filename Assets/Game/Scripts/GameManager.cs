@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using TMPro;
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        DebugGameStart();
+        StartCoroutine(DebugGameSetupDelay());
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -94,12 +95,30 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void GameStart()
     {
-        // TODO : game start
+        float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+        float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+        Vector3 position = new Vector3(x, 0.0f, z);
+        Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
+        PhotonNetwork.Instantiate("Player", position, rotation, 0);
     }
 
     private void DebugGameStart()
     {
-        // TODO : debug game start
+        float angularStart = (360.0f / 8f) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+        float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+        Vector3 position = new Vector3(x, 0.0f, z);
+        Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
+        PhotonNetwork.Instantiate("Player", position, rotation, 0);
+    }
+
+    IEnumerator DebugGameSetupDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        DebugGameStart();
     }
 
     private int PlayerLoadCount()
