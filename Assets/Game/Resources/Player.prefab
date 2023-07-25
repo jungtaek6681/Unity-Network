@@ -159,6 +159,8 @@ MonoBehaviour:
   movePower: 5
   rotateSpeed: 90
   maxSpeed: 50
+  bulletPrefab: {fileID: 1629329575216603484, guid: efabc616e7042d04a9dc54ded211bc5a,
+    type: 3}
 --- !u!114 &4125351435222448056
 MonoBehaviour:
   m_ObjectHideFlags: 0

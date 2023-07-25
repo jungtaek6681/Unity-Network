@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float movePower;
     [SerializeField] float rotateSpeed;
     [SerializeField] float maxSpeed;
+    [SerializeField] Bullet bulletPrefab;
 
     private PlayerInput playerInput;
     private Rigidbody rigid;
@@ -48,6 +49,12 @@ public class PlayerController : MonoBehaviourPun
         inputDir = value.Get<Vector2>();
     }
 
+    private void OnFire(InputValue value)
+    {
+        if (value.isPressed)
+            Fire();
+    }
+
     private void Accelate(float input)
     {
         rigid.AddForce(input * movePower * transform.forward, ForceMode.Force);
@@ -60,6 +67,17 @@ public class PlayerController : MonoBehaviourPun
     private void Rotate(float input)
     {
         transform.Rotate(Vector3.up, input * rotateSpeed * Time.deltaTime);
+    }
+
+    private void Fire()
+    {
+        photonView.RPC("CreateBullet", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void CreateBullet()
+    {
+        Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 
     private void SetPlayerColor()
