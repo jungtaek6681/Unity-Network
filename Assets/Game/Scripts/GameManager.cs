@@ -149,11 +149,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             if (Random.Range(0, 10) < 5)
             {
-                PhotonNetwork.Instantiate("LargeStone", position, Random.rotation, 0, instantiationData);
+                PhotonNetwork.InstantiateRoomObject("LargeStone", position, Random.rotation, 0, instantiationData);
             }
             else
             {
-                PhotonNetwork.Instantiate("SmallStone", position, Random.rotation, 0, instantiationData);
+                PhotonNetwork.InstantiateRoomObject("SmallStone", position, Random.rotation, 0, instantiationData);
             }
         }
     }
