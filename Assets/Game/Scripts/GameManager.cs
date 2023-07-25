@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_Text infoText;
     [SerializeField] float countdownTime;
+    [SerializeField] float spawnStoneTime;
 
     private void Start()
     {
@@ -49,6 +50,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Left Room");
         PhotonNetwork.LoadLevel("LobbyScene");
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (newMasterClient.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            StartCoroutine(SpawnStoneRoutine());
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
@@ -102,6 +109,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
         PhotonNetwork.Instantiate("Player", position, rotation, 0);
+
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(SpawnStoneRoutine());
     }
 
     private void DebugGameStart()
@@ -113,12 +123,39 @@ public class GameManager : MonoBehaviourPunCallbacks
         Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
         PhotonNetwork.Instantiate("Player", position, rotation, 0);
+
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(SpawnStoneRoutine());
     }
 
     IEnumerator DebugGameSetupDelay()
     {
         yield return new WaitForSeconds(1f);
         DebugGameStart();
+    }
+
+    IEnumerator SpawnStoneRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnStoneTime);
+
+            Vector2 direction = Random.insideUnitCircle.normalized;
+            Vector3 position = new Vector3(direction.x, 0, direction.y) * 200f;
+
+            Vector3 force = -position.normalized * 30f + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+            Vector3 torque = Random.insideUnitSphere * Random.Range(1f, 3f);
+            object[] instantiationData = { force, torque };
+
+            if (Random.Range(0, 10) < 5)
+            {
+                PhotonNetwork.Instantiate("LargeStone", position, Random.rotation, 0, instantiationData);
+            }
+            else
+            {
+                PhotonNetwork.Instantiate("SmallStone", position, Random.rotation, 0, instantiationData);
+            }
+        }
     }
 
     private int PlayerLoadCount()
