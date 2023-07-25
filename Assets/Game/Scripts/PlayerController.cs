@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
@@ -12,14 +13,28 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float rotateSpeed;
     [SerializeField] float maxSpeed;
 
+    private PlayerInput playerInput;
     private Rigidbody rigid;
+    private CinemachineVirtualCamera cm;
     private Vector2 inputDir;
 
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
         rigid = GetComponent<Rigidbody>();
+        cm = FindObjectOfType<CinemachineVirtualCamera>();
 
         SetPlayerColor();
+
+        if (photonView.IsMine)
+        {
+            cm.Follow = transform;
+            cm.LookAt = transform;
+        }
+        else
+        {
+            Destroy(playerInput);
+        }
     }
 
     private void Update()
