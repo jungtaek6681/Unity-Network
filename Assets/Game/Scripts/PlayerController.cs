@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviourPun
+public class PlayerController : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] List<Color> playerColor;
     [SerializeField] float movePower;
@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviourPun
     private Rigidbody rigid;
     private CinemachineVirtualCamera cm;
     private Vector2 inputDir;
+
+    [SerializeField] int fireCount;
+    [SerializeField] float moveSpeed;
 
     private void Awake()
     {
@@ -42,6 +45,8 @@ public class PlayerController : MonoBehaviourPun
     {
         Accelate(inputDir.y);
         Rotate(inputDir.x);
+
+        moveSpeed = rigid.velocity.magnitude;
     }
 
     private void OnMove(InputValue value)
@@ -78,6 +83,7 @@ public class PlayerController : MonoBehaviourPun
     public void CreateBullet()
     {
         Instantiate(bulletPrefab, transform.position, transform.rotation);
+        fireCount++;
     }
 
     private void SetPlayerColor()
@@ -88,5 +94,17 @@ public class PlayerController : MonoBehaviourPun
 
         Renderer render = GetComponent<Renderer>();
         render.material.color = playerColor[playerNumber];
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(moveSpeed);
+        }
+        else // stream.IsReading
+        {
+            moveSpeed = (float)stream.ReceiveNext();
+        }
     }
 }
