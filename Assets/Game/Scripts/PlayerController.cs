@@ -13,11 +13,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [SerializeField] float rotateSpeed;
     [SerializeField] float maxSpeed;
     [SerializeField] Bullet bulletPrefab;
+    [SerializeField] float fireCoolTime;
 
     private PlayerInput playerInput;
     private Rigidbody rigid;
     private CinemachineVirtualCamera cm;
     private Vector2 inputDir;
+    private float lastFireTime = float.MinValue;
 
     [SerializeField] int fireCount;
     [SerializeField] float moveSpeed;
@@ -76,11 +78,21 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Fire()
     {
-        photonView.RPC("CreateBullet", RpcTarget.All, transform.position, transform.rotation);
+        photonView.RPC("RequestCreateBullet", RpcTarget.MasterClient);
     }
 
     [PunRPC]
-    public void CreateBullet(Vector3 position, Quaternion rotation, PhotonMessageInfo info)
+    public void RequestCreateBullet()
+    {
+        if (Time.time < lastFireTime + fireCoolTime)
+            return;
+
+        lastFireTime = Time.time;
+        photonView.RPC("ResultCreateBullet", RpcTarget.AllViaServer, transform.position, transform.rotation);
+    }
+
+    [PunRPC]
+    public void ResultCreateBullet(Vector3 position, Quaternion rotation, PhotonMessageInfo info)
     {
         float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
 
