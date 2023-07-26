@@ -162,7 +162,7 @@ MonoBehaviour:
   maxSpeed: 50
   bulletPrefab: {fileID: 1629329575216603484, guid: efabc616e7042d04a9dc54ded211bc5a,
     type: 3}
-  fireCoolTime: 1
+  fireCoolTime: 0.2
   fireCount: 0
   moveSpeed: 0
 --- !u!114 &4125351435222448056

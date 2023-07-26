@@ -26,4 +26,13 @@ public class Stone : MonoBehaviourPun
         if (transform.position.magnitude > 200f)
             PhotonNetwork.Destroy(gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!photonView.IsMine)
+            return;
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+            PhotonNetwork.Destroy(photonView);
+    }
 }
