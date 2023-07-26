@@ -76,13 +76,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Fire()
     {
-        photonView.RPC("CreateBullet", RpcTarget.All);
+        photonView.RPC("CreateBullet", RpcTarget.All, transform.position, transform.rotation);
     }
 
     [PunRPC]
-    public void CreateBullet()
+    public void CreateBullet(Vector3 position, Quaternion rotation, PhotonMessageInfo info)
     {
-        Instantiate(bulletPrefab, transform.position, transform.rotation);
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+
+        Bullet bullet = Instantiate(bulletPrefab);
+        bullet.Init(position, rotation, lag);
         fireCount++;
     }
 

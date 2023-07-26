@@ -15,7 +15,15 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
-        rigid.velocity = transform.forward * moveSpeed;
         Destroy(gameObject, 3f);
+    }
+
+    public void Init(Vector3 position, Quaternion rotation, float lag)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+
+        rigid.velocity = transform.forward * moveSpeed;
+        transform.position += rigid.velocity * lag;
     }
 }
